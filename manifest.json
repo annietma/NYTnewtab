@@ -1,8 +1,8 @@
 {
-  "name": "NYT Headlines New Tab",
-  "version": "1.0",
+  "name": "NYT New Tab",
+  "version": "1.1",
   "manifest_version": 3,
-  "description": "Keep up with the NYT headlines in your new tab.",
+  "description": "Keep up with the headlines in your new tab. Not affiliated with The New York Times.",
   "icons": {
     "16": "icons/NYTlogo.png",
     "48": "icons/NYTlogo.png",

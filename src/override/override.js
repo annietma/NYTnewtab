@@ -1,5 +1,4 @@
 //Options Defaults
-var mode = "light";
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -8,7 +7,7 @@ function getRandomInt(min, max) {
 }
 
 function getAPIKey() {
-	const keys = [
+	var keys = [
 		"kRouGn3S9bOU4hl4WzqTwAAjCOw3s5rs",
 		"bkjgwZ0he2obyPJxNe9bnnwicuVkzWdV",
 		"pVCBnRMfbHA7ba3jnvTXoxM29AjdqXBN", 

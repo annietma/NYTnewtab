@@ -76,13 +76,3 @@ html, body {
 .image:hover + .caption {
 	color: var(--caption-color);
 }
-
-.image:hover::after + .caption {
-	display: block;
-	padding-top: 7px;
-	font-family: Georgia, serif;
-	font-size: 16px;
-	color: #666666;
-	width: 650px;
-	
-}

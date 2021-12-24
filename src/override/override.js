@@ -1,10 +1,40 @@
+//Options Defaults
+var mode = "light";
+
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min);
 }
-window.onload = function getNews() {
-	fetch("https://api.nytimes.com/svc/topstories/v2/home.json?api-key=kRouGn3S9bOU4hl4WzqTwAAjCOw3s5rs")
+
+function getAPIKey() {
+	const keys = [
+		"kRouGn3S9bOU4hl4WzqTwAAjCOw3s5rs",
+		"bkjgwZ0he2obyPJxNe9bnnwicuVkzWdV",
+		"pVCBnRMfbHA7ba3jnvTXoxM29AjdqXBN", 
+		"IxwVYA312sQKpArgW1MkmmpdKrAhDJBn",
+		"w4ogopGZUB6We5dBedOtzaEESOXfuImG"
+	];
+	var i = getRandomInt(0, keys.length);
+	return keys[i];
+}
+
+function getOptions() {
+	chrome.storage.sync.get({
+        mode: 'light'
+    }, function(items) {
+        if (items.mode === 'dark') {
+        	document.documentElement.style.setProperty('--background-color', '#1C2026');
+        	document.documentElement.style.setProperty('--headline-color', 'white');
+        	document.documentElement.style.setProperty('--abstract-color', '#cccccc');
+        	document.documentElement.style.setProperty('--hr-color', '#24292F');
+        	document.documentElement.style.setProperty('--caption-color', '#999999');
+        }
+    });
+}
+
+function getNews() {
+	fetch("https://api.nytimes.com/svc/topstories/v2/home.json?api-key="+getAPIKey())
 	.then(response => response.json())
 	.then(response => {
 		var i = getRandomInt(0, response.results.length);
@@ -30,8 +60,26 @@ window.onload = function getNews() {
 		document.getElementById("output").innerHTML += 
 		"<div>"+
 			"<div class='text headline'>Error 429: Too Many Requests</div>"+
-			"<div class='text abstract'>You have made too many requests to The New York Times. Please try again in a minute.</div>"+
+			"<div class='text abstract'>There have been too many requests to The New York Times. Please try again in a minute.</div>"+
 			"<hr class='hr'>"+
 		"</div>";
 	});
 }
+
+window.onload = function intitialize() {
+	getOptions();
+	getNews();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

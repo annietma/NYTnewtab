@@ -1,6 +1,6 @@
 # NYT Headlines New Tab
 
-This Chrome extension provides an elegant, accessible interface for you to stay up to date with the top headlines from The New York Times.
+This Chrome extension provides a fast, elegant interface for you to stay up to date with the top headlines from The New York Times.
 
 ![Screen Shot 2021-12-23 at 11.55.57 AM.png](images/Screen_Shot_2021-12-23_at_11.55.57_AM.png)
 
@@ -9,6 +9,10 @@ This Chrome extension provides an elegant, accessible interface for you to stay 
 - Opening a new tab will generate a random article from The New York Times’ homepage
 - Clicking on the headline will take you to the article webpage
 - Hovering over the image will reveal its caption, if there is one
+
+### Customizable Features
+
+- Light/Dark mode!!
 
 ### How to install:
 

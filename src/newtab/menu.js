@@ -13,25 +13,25 @@ $(document)
 $(document)
 	.on("mouseenter", ".menu-title", function (event) {
 		if (!$(".menu-pages").is(":visible")) {
-			$(".menu-title").css("color", "black");
+			$(".menu-title").css("color", "var(--headline-color)");
 			$("#" + event.target.id).css("color", "#326890");
 		}
 	})
 	.on("mouseleave", ".menu-title", function () {
 		if (!$(".menu-pages").is(":visible")) {
-			$(".menu-title").css("color", "black");
+			$(".menu-title").css("color", "var(--headline-color)");
 		}
 	});
 
 //show menu when menu options are clicked
 $(document).on("click", ".menu-title", function (event) {
 	//show containers/menu bar
-	$(".menu-container").css("background-color", "white");
+	$(".menu-container").css("background-color", "var(--background-color)");
 	$(".menu-container").css("box-shadow", "0 2px 15px rgba(0, 0, 0, 0.25)");
 	$(".hr-menu").fadeTo(150, 1);
 	$(".menu-pages").fadeTo(150, 1);
-	$(".menu-title").css("color", "black");
-	$("#" + event.target.id).css("color", "#326890");
+	$(".menu-title").css("color", "var(--headline-color)");
+	$("#" + event.target.id).css("color", "var(--link-color)");
 	$(".headline").css("z-index", "0");
 	//show menu page
 	$(".menu-option").css("display", "none");
@@ -179,3 +179,92 @@ function removeFromReadingList(readinglist, article, index, history) {
 	document.getElementById("menu-history").innerHTML = "";
 	setUpMenuArticles(history, "menu-history");
 }
+
+/*------Settings Functions------*/
+var currentMode = "";
+
+function saveSettings(event) {
+	let selections = document.getElementById("menu-settings").elements;
+	let mode = selections["mode"].value;
+	currentMode = mode;
+	chrome.storage.sync.set({
+		mode: mode,
+	});
+}
+
+function restoreSettings() {
+	chrome.storage.sync.get(
+		{
+			mode: "",
+		},
+		function (items) {
+			currentMode = items.mode;
+			document.getElementById(items.mode.toString()).checked = true;
+			if (items.mode === "dark") {
+				document.documentElement.style.setProperty(
+					"--background-color",
+					"#1C2026"
+				);
+				document.documentElement.style.setProperty(
+					"--headline-color",
+					"white"
+				);
+				document.documentElement.style.setProperty(
+					"--abstract-color",
+					"#cccccc"
+				);
+				document.documentElement.style.setProperty(
+					"--hr-color",
+					"#24292F"
+				);
+				document.documentElement.style.setProperty(
+					"--caption-color",
+					"#999999"
+				);
+				setMenuDarkMode();
+			}
+		}
+	);
+}
+
+//click mode toggle
+$(document).on("click", "#dark, #light", function () {
+	console.log(currentMode);
+	if (currentMode === "light") {
+		document.getElementById("dark").checked = true;
+		saveSettings();
+		setMenuDarkMode();
+	} else {
+		document.getElementById("light").checked = true;
+		saveSettings();
+		setMenuLightMode();
+	}
+	$(document).on("click", ".newtab", function () {
+		location.reload();
+	});
+});
+
+function setMenuDarkMode() {
+	$(".toggle-switch").css("left", "50%");
+	$(".toggle-switch").css("background-color", "#56585c");
+	$(".dark").css("opacity", "1");
+	$(".dark, .light").css("color", "white");
+	$(".light").css("opacity", "0.5");
+	$(".menu-pages").css("background-color", "#1C2026");
+}
+
+function setMenuLightMode() {
+	$(".toggle-switch").css("left", "0");
+	$(".toggle-switch").css("background-color", "white");
+	$(".dark").css("opacity", "0.5");
+	$(".dark, .light").css("color", "black");
+	$(".light").css("opacity", "1");
+	$(".menu-pages").css("background-color", "white");
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+	restoreSettings();
+	document
+		.getElementById("menu-settings")
+		.addEventListener("change", () => this.saveSettings());
+});

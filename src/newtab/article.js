@@ -24,38 +24,6 @@ function getAPIKey() {
 	return keys[i];
 }
 
-function getOptions() {
-	chrome.storage.sync.get(
-		{
-			mode: "light",
-		},
-		function (items) {
-			if (items.mode === "dark") {
-				document.documentElement.style.setProperty(
-					"--background-color",
-					"#1C2026"
-				);
-				document.documentElement.style.setProperty(
-					"--headline-color",
-					"white"
-				);
-				document.documentElement.style.setProperty(
-					"--abstract-color",
-					"#cccccc"
-				);
-				document.documentElement.style.setProperty(
-					"--hr-color",
-					"#24292F"
-				);
-				document.documentElement.style.setProperty(
-					"--caption-color",
-					"#999999"
-				);
-			}
-		}
-	);
-}
-
 function getNews() {
 	fetch(
 		"https://api.nytimes.com/svc/topstories/v2/home.json?api-key=" +
@@ -158,7 +126,6 @@ function initializeReadingList() {
 }
 
 window.onload = function intitialize() {
-	getOptions();
 	getNews();
 	initializeReadingList();
 };

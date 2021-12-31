@@ -1,4 +1,10 @@
 //Options Defaults
+var i = 0;
+var headline = "headline";
+var URL = "URL";
+var abstract = "abstract";
+var imageURL = "imageURL";
+var caption = "caption";
 
 function getRandomInt(min, max) {
 	min = Math.ceil(min);
@@ -57,12 +63,12 @@ function getNews() {
 	)
 		.then((response) => response.json())
 		.then((response) => {
-			var i = getRandomInt(0, response.results.length);
-			var headline = response.results[i].title;
-			var URL = response.results[i].url;
-			var abstract = response.results[i].abstract;
-			var imageURL = response.results[i].multimedia[0].url;
-			var caption = response.results[i].multimedia[0].caption;
+			i = getRandomInt(0, response.results.length);
+			headline = response.results[i].title;
+			URL = response.results[i].url;
+			abstract = response.results[i].abstract;
+			imageURL = response.results[i].multimedia[0].url;
+			caption = response.results[i].multimedia[0].caption;
 			document.getElementById("newtab").innerHTML +=
 				"<div>" +
 				"<a href='" +
@@ -82,8 +88,9 @@ function getNews() {
 				"<div class='image caption'>" +
 				caption +
 				"</div>" +
-				"<div style='padding-bottom: 50px';>";
-			("</div>");
+				"<div style='padding-bottom: 50px';>" +
+				"</div>";
+			storeNews(response);
 		})
 		.catch((err) => {
 			console.error(err);
@@ -96,7 +103,62 @@ function getNews() {
 		});
 }
 
+function storeNews(response) {
+	chrome.storage.local.get(
+		{
+			history: [],
+			readinglist: [],
+		},
+		function (items) {
+			let hist = items.history;
+			let list = items.readinglist;
+
+			let newArticle = {
+				URL: URL,
+				headline: headline,
+				abstract: abstract,
+				imageURL: imageURL,
+			};
+			let indexofDuplicate = hist.findIndex(
+				(x) => x.headline === newArticle.headline
+			);
+			if (indexofDuplicate >= 0) {
+				hist.splice(indexofDuplicate, 1);
+			}
+			let readingListIndex = list.findIndex(
+				(x) => x.headline === newArticle.headline
+			);
+			if (readingListIndex < 0) {
+				newArticle.overlay = "+ Add to Reading List";
+			} else {
+				newArticle.overlay = "- Remove from Reading List";
+			}
+			hist.push(newArticle);
+			if (hist.length > 20) {
+				hist.shift();
+			}
+			chrome.storage.local.set({
+				history: hist,
+			});
+
+			setUpMenuArticles(hist, "menu-history");
+		}
+	);
+}
+
+function initializeReadingList() {
+	chrome.storage.local.get(
+		{
+			readinglist: [],
+		},
+		function (items) {
+			setUpMenuArticles(items.readinglist, "menu-readinglist");
+		}
+	);
+}
+
 window.onload = function intitialize() {
 	getOptions();
 	getNews();
+	initializeReadingList();
 };

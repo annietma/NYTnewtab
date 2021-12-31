@@ -7,18 +7,26 @@
     <script src="menu.js"></script>
     <link rel="stylesheet" href="article.css" />
     <link rel="stylesheet" href="menu.css" />
+    <link
+      href="http://fonts.googleapis.com/css?family=Open%20Sans"
+      rel="stylesheet"
+      type="text/css"
+    />
   </head>
 
   <body>
-    <div id="newtab" class="newtab"></div>
-    <div id="menu-container" class="menu-container">
+    <div class="newtab" id="newtab"></div>
+    <div class="menu-container" id="menu-container">
       <div class="menu-bar">
         <button class="menu-title" id="history">History</button>
         <button class="menu-title" id="readinglist">Reading List</button>
         <button class="menu-title" id="settings">Settings</button>
       </div>
-      <div class="menu">
-        <hr class="hr-menu" />
+      <hr class="hr-menu" />
+      <div class="menu-pages" id="menu-pages">
+        <div class="menu-option" id="menu-history"></div>
+        <div class="menu-option" id="menu-readinglist"></div>
+        <div class="menu-option" id="menu-settings"></div>
       </div>
     </div>
   </body>

@@ -9,31 +9,33 @@ body {
 }
 
 .menu-container {
-	z-index: 2;
 	height: 100%;
-	width: 300px;
+	width: 310px;
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	align-items: center;
 	transition: 0.1s;
+	font-family: Georgia, serif;
+	position: fixed;
 }
 
 .menu-bar {
 	position: absolute;
 	width: 100%;
-	z-index: 10;
-	margin-top: 10px;
+	padding-top: 10px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
+	background-color: white;
 }
 
 .menu-title {
-	display: none;
-	font-family: Georgia, serif;
+	opacity: 0.1;
 	font-style: italic;
 	font-size: 15px;
 	background-color: transparent;
 	border: 0;
+	font-family: Georgia, serif;
 }
 
 .menu-title:hover {
@@ -41,16 +43,100 @@ body {
 	cursor: pointer;
 }
 
-.menu {
+.menu-pages {
 	display: none;
-	width: 272px;
-	height: 100%;
+	overflow: scroll;
+	width: 100%;
+}
+
+::-webkit-scrollbar {
+	display: none;
 }
 
 .hr-menu {
+	display: none;
+	width: 280px;
 	margin-top: 40px;
 	border-bottom: 1px solid black;
 	border-top: none;
 	border-left: none;
 	border-right: none;
+}
+
+.menu-option {
+	width: 100%;
+	margin: auto;
+}
+
+.menu-article {
+	width: 80%;
+	margin: auto;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	display: flex;
+	flex-direction: column;
+	transition: 0.1s;
+}
+
+.menu-headline {
+	text-decoration: none;
+	font-size: 14px;
+	font-style: italic;
+	color: black;
+	margin-top: 5px;
+	text-decoration: none;
+}
+
+.menu-abstract {
+	font-size: 12px;
+	color: gray;
+	margin-top: 5px;
+	text-decoration: none;
+}
+
+.menu-article:hover {
+	transform: scale(1.05);
+}
+
+.menu-headline:hover {
+	color: #326890;
+	text-decoration: underline;
+}
+
+.menu-image-container {
+	position: relative;
+}
+
+.menu-image {
+	width: 100%;
+}
+
+.addtolist {
+	display: inline-block;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	color: white;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	font-size: 14px;
+}
+
+.addtolist:active {
+	transform: translateY(3px);
+}
+
+.menu-image-container:hover .menu-image {
+	filter: brightness(50%) blur(5px);
+	transition: 0.1s ease;
+}
+
+.menu-image-container:hover .addtolist {
+	opacity: 1;
+	cursor: pointer;
 }

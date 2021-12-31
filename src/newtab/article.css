@@ -39,6 +39,8 @@ body {
 	font-size: 32px;
 	color: var(--headline-color);
 	text-decoration: none;
+	position: relative;
+	z-index: 2;
 }
 
 .headline:hover {

@@ -1,9 +1,9 @@
 async function reloadNewTab() {
-  chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
-     if (!tabs[0].url) {
-     	chrome.tabs.reload(tabs[0].id);
-     }
-  });
+  //chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
+     //if (!tabs[0].url) {
+     	//chrome.tabs.reload(tabs[0].id);
+     //}
+  //});
 }
 
 function saveOptions() {

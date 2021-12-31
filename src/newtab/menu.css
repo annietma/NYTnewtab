@@ -1,0 +1,56 @@
+body {
+	position: relative;
+}
+
+.newtab,
+.menu-container {
+	width: 100%;
+	position: absolute;
+}
+
+.menu-container {
+	z-index: 2;
+	height: 100%;
+	width: 300px;
+	display: flex;
+	justify-content: center;
+	transition: 0.1s;
+}
+
+.menu-bar {
+	position: absolute;
+	width: 100%;
+	z-index: 10;
+	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+
+.menu-title {
+	display: none;
+	font-family: Georgia, serif;
+	font-style: italic;
+	font-size: 15px;
+	background-color: transparent;
+	border: 0;
+}
+
+.menu-title:hover {
+	color: #326890;
+	cursor: pointer;
+}
+
+.menu {
+	display: none;
+	width: 272px;
+	height: 100%;
+}
+
+.hr-menu {
+	margin-top: 40px;
+	border-bottom: 1px solid black;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}

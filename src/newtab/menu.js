@@ -28,8 +28,8 @@ $(document).on("click", ".menu-title", function (event) {
 	//show containers/menu bar
 	$(".menu-container").css("background-color", "var(--background-color)");
 	$(".menu-container").css("box-shadow", "0 2px 15px rgba(0, 0, 0, 0.25)");
-	$(".hr-menu").fadeTo(150, 1);
-	$(".menu-pages").fadeTo(150, 1);
+	$(".hr-menu").fadeTo(200, 1);
+	$(".menu-pages").fadeTo(200, 1);
 	$(".menu-title").css("color", "var(--headline-color)");
 	$("#" + event.target.id).css("color", "var(--link-color)");
 	$(".headline").css("z-index", "0");
@@ -163,12 +163,13 @@ function removeFromReadingList(readinglist, article, index, history) {
 }
 
 /*------Settings Functions------*/
-var currentMode = "";
+var currentMode = "light";
 var currentCategories = [];
 
 function saveSettings(event) {
 	let selections = document.getElementById("menu-settings").elements;
 	currentMode = selections["mode"].value;
+
 	currentCategories = Array.prototype.slice
 		.call(selections["categories"])
 		.filter(function (x) {
@@ -177,9 +178,11 @@ function saveSettings(event) {
 		.map(function (x) {
 			return x.value;
 		});
+
 	chrome.storage.sync.set({
 		mode: currentMode,
 		categories: currentCategories,
+		showcaption: selections["showcaption"].checked,
 	});
 }
 
@@ -188,6 +191,7 @@ function restoreSettings() {
 		{
 			mode: "light",
 			categories: [],
+			showcaption: false,
 		},
 		function (items) {
 			currentMode = items.mode;
@@ -200,13 +204,21 @@ function restoreSettings() {
 				document.documentElement.style.setProperty("--caption-color", "#999999");
 				setMenuDarkMode();
 			}
+
 			currentCategories = items.categories;
 			if (currentCategories.length === 0) {
 				document.getElementById("home").checked = true;
 				currentCategories.push("home");
+			} else if (currentCategories.length === 24) {
+				document.getElementById("selectall").checked = true;
 			}
 			for (let i = 0; i < items.categories.length; i++) {
 				document.getElementById(items.categories[i]).checked = true;
+			}
+
+			if (items.showcaption === true) {
+				document.documentElement.style.setProperty("--caption-display", "block");
+				document.getElementById("showcaption").checked = true;
 			}
 		}
 	);
@@ -243,8 +255,32 @@ function setMenuLightMode() {
 	$(".mode-container").css("background-color", "white");
 }
 
-//click categories
-$(document).on("click", ".categories-container input", function () {});
+//click select all
+$(document).on("click", "#selectall", function () {
+	if (this.checked) {
+		document.getElementById("selectnone").checked = false;
+		let toCheck = document.getElementsByName("categories");
+		for (let i = 0; i < toCheck.length; i++) {
+			toCheck[i].checked = true;
+		}
+	}
+});
+
+//click select none
+$(document).on("click", "#selectnone", function () {
+	if (this.checked) {
+		document.getElementById("selectall").checked = false;
+		let toCheck = document.getElementsByName("categories");
+		for (let i = 0; i < toCheck.length; i++) {
+			toCheck[i].checked = false;
+		}
+	}
+});
+
+//click reload
+$(document).on("click", ".reload", function () {
+	location.reload();
+});
 
 window.addEventListener("DOMContentLoaded", () => {
 	restoreSettings();

@@ -37,11 +37,20 @@ function getNews() {
 		.then((response) => response.json())
 		.then((response) => {
 			i = getRandomInt(0, response.results.length);
+			if (response.results[i].title === "") {
+				if (i != response.results.length - 1) {
+					i++;
+				} else {
+					i = getRandomInt(0, response.results.length - 1);
+				}
+			}
 			headline = response.results[i].title;
 			URL = response.results[i].url;
 			abstract = response.results[i].abstract;
-			imageURL = response.results[i].multimedia[0].url;
-			caption = response.results[i].multimedia[0].caption;
+			if (response.results[i].multimedia.length > 0) {
+				imageURL = response.results[i].multimedia[0].url;
+				caption = response.results[i].multimedia[0].caption;
+			}
 			document.getElementById("newtab").innerHTML +=
 				"<div>" +
 				"<a href='" +
@@ -67,7 +76,7 @@ function getNews() {
 		})
 		.catch((err) => {
 			console.error(err);
-			document.getElementById("output").innerHTML +=
+			document.getElementById("newtab").innerHTML +=
 				"<div>" +
 				"<div class='text headline'>Error 429: Too Many Requests</div>" +
 				"<div class='text abstract'>There have been too many requests to The New York Times. Please try again in a minute.</div>" +
@@ -103,7 +112,7 @@ function storeNews(response) {
 				newArticle.overlay = "- Remove from Reading List";
 			}
 			hist.push(newArticle);
-			if (hist.length > 20) {
+			if (hist.length > 100) {
 				hist.shift();
 			}
 			chrome.storage.local.set({
@@ -130,3 +139,8 @@ window.onload = function intitialize() {
 	getNews();
 	initializeReadingList();
 };
+
+/*------jQuery------*/
+$(document).on("mouseenter", ".image", function () {
+	$(".caption").fadeTo(150, 1);
+});

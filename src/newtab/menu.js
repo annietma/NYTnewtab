@@ -9,20 +9,6 @@ $(document)
 		}
 	});
 
-//change menu title colors when hovering (when menu is hidden)
-$(document)
-	.on("mouseenter", ".menu-title", function (event) {
-		if (!$(".menu-pages").is(":visible")) {
-			$(".menu-title").css("color", "var(--headline-color)");
-			$("#" + event.target.id).css("color", "#326890");
-		}
-	})
-	.on("mouseleave", ".menu-title", function () {
-		if (!$(".menu-pages").is(":visible")) {
-			$(".menu-title").css("color", "var(--headline-color)");
-		}
-	});
-
 //show menu when menu options are clicked
 $(document).on("click", ".menu-title", function (event) {
 	//show containers/menu bar

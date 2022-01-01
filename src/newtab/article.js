@@ -36,6 +36,7 @@ function getNews() {
 	fetch("https://api.nytimes.com/svc/topstories/v2/" + getCategory() + ".json?api-key=" + getAPIKey())
 		.then((response) => response.json())
 		.then((response) => {
+			console.log(response);
 			i = getRandomInt(0, response.results.length);
 			if (response.results[i].title === "") {
 				if (i != response.results.length - 1) {
@@ -47,7 +48,7 @@ function getNews() {
 			headline = response.results[i].title;
 			URL = response.results[i].url;
 			abstract = response.results[i].abstract;
-			if (response.results[i].multimedia.length > 0) {
+			if (response.results[i].multimedia != undefined) {
 				imageURL = response.results[i].multimedia[0].url;
 				caption = response.results[i].multimedia[0].caption;
 			}

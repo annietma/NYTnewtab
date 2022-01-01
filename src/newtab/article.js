@@ -1,4 +1,3 @@
-//Options Defaults
 var i = 0;
 var headline = "headline";
 var URL = "URL";
@@ -24,11 +23,17 @@ function getAPIKey() {
 	return keys[i];
 }
 
+function getCategory() {
+	if (currentCategories.length === 0) {
+		document.getElementById("home").checked = true;
+		currentCategories.push("home");
+	}
+	var i = getRandomInt(0, currentCategories.length);
+	return currentCategories[i];
+}
+
 function getNews() {
-	fetch(
-		"https://api.nytimes.com/svc/topstories/v2/home.json?api-key=" +
-			getAPIKey()
-	)
+	fetch("https://api.nytimes.com/svc/topstories/v2/" + getCategory() + ".json?api-key=" + getAPIKey())
 		.then((response) => response.json())
 		.then((response) => {
 			i = getRandomInt(0, response.results.length);
@@ -87,15 +92,11 @@ function storeNews(response) {
 				abstract: abstract,
 				imageURL: imageURL,
 			};
-			let indexofDuplicate = hist.findIndex(
-				(x) => x.headline === newArticle.headline
-			);
+			let indexofDuplicate = hist.findIndex((x) => x.headline === newArticle.headline);
 			if (indexofDuplicate >= 0) {
 				hist.splice(indexofDuplicate, 1);
 			}
-			let readingListIndex = list.findIndex(
-				(x) => x.headline === newArticle.headline
-			);
+			let readingListIndex = list.findIndex((x) => x.headline === newArticle.headline);
 			if (readingListIndex < 0) {
 				newArticle.overlay = "+ Add to Reading List";
 			} else {

@@ -7,11 +7,7 @@
     <script src="menu.js"></script>
     <link rel="stylesheet" href="article.css" />
     <link rel="stylesheet" href="menu.css" />
-    <link
-      href="http://fonts.googleapis.com/css?family=Open%20Sans"
-      rel="stylesheet"
-      type="text/css"
-    />
+    <link href="http://fonts.googleapis.com/css?family=Open%20Sans" rel="stylesheet" type="text/css" />
   </head>
 
   <body>
@@ -27,70 +23,46 @@
         <div class="menu-option" id="menu-history"></div>
         <div class="menu-option" id="menu-readinglist"></div>
         <form class="menu-option" id="menu-settings">
-          <div class="mode-toggle-container">
-            <div class="toggle-switch"></div>
-            <div class="mode-toggle">
-              <input
-                type="radio"
-                name="mode"
-                id="light"
-                value="light"
-                checked
-              />
-              <label for="light" class="light">Light</label>
-              <input type="radio" name="mode" id="dark" value="dark" />
-              <label for="dark" class="dark">Dark</label>
+          <div class="mode-container">
+            <div class="mode-toggle-container">
+              <div class="toggle-switch"></div>
+              <div class="mode-toggle">
+                <input type="radio" name="mode" id="light" value="light" checked />
+                <label for="light" class="light">Light</label>
+                <input type="radio" name="mode" id="dark" value="dark" />
+                <label for="dark" class="dark">Dark</label>
+              </div>
             </div>
           </div>
-          <hr class="hr-menu" />
+          <hr class="hr-menu" style="margin-top: 7px;"/>
+          <div class="categories-title">News categories included:</div>
           <div class="categories-container">
-            <div class="categories-title">Categories:</div>
-            <div class="categories-abstract">
-              Select the news categories you would like to see in your rotation.
-            </div>
-            <input
-              type="checkbox"
-              name="categories"
-              id="business"
-              value="business"
-            />Business <br />
-            <input
-              type="checkbox"
-              name="categories"
-              id="science"
-              value="science"
-            />Science <br />
-            <input
-              type="checkbox"
-              name="categories"
-              id="technology"
-              value="technology"
-            />Tech <br />
-            <input
-              type="checkbox"
-              name="categories"
-              id="world"
-              value="world"
-            />World <br />
-            <input
-              type="checkbox"
-              name="categories"
-              id="sports"
-              value="sports"
-            />Sports <br />
-            <input
-              type="checkbox"
-              name="categories"
-              id="arts"
-              value="arts"
-            />Arts <br />
-            <input
-              type="checkbox"
-              name="categories"
-              id="books"
-              value="books"
-            />Books <br />
+            <input type="checkbox" name="categories" id="home" value="home" />Headlines<br />
+            <input type="checkbox" name="categories" id="US" value="US" />US<br />
+            <input type="checkbox" name="categories" id="World" value="World" />World<br />
+            <input type="checkbox" name="categories" id="arts" value="arts" />Arts<br />
+            <input type="checkbox" name="categories" id="automobiles" value="automobiles" />Automobiles<br />
+            <input type="checkbox" name="categories" id="books" value="books" />Books<br />
+            <input type="checkbox" name="categories" id="business" value="business" />Business<br />
+            <input type="checkbox" name="categories" id="fashion" value="fashion" />Fashion<br />
+            <input type="checkbox" name="categories" id="food" value="food" />Food<br />
+            <input type="checkbox" name="categories" id="health" value="health" />Health<br />
+            <input type="checkbox" name="categories" id="insider" value="insider" />Insider<br />
+            <input type="checkbox" name="categories" id="magazine" value="magazine" />Magazine<br />
+            <input type="checkbox" name="categories" id="movies" value="movies" />Movies<br />
+            <input type="checkbox" name="categories" id="opinion" value="opinion" />Opinion<br />
+            <input type="checkbox" name="categories" id="politics" value="politics" />Politics<br />
+            <input type="checkbox" name="categories" id="realestate" value="realestate" />Real Estate<br />
+            <input type="checkbox" name="categories" id="science" value="science" />Science <br />
+            <input type="checkbox" name="categories" id="sports" value="sports" />Sports<br />
+            <input type="checkbox" name="categories" id="sundayreview" value="sundayreview" />Sunday Review<br />
+            <input type="checkbox" name="categories" id="technology" value="technology" />Technology<br />
+            <input type="checkbox" name="categories" id="theater" value="theater" />Theater<br />
+            <input type="checkbox" name="categories" id="t-magazine" value="t-magazine" />Style Magazine<br />
+            <input type="checkbox" name="categories" id="travel" value="travel" />Travel<br />
+            <input type="checkbox" name="categories" id="theupshot" value="theupshot" />The Upshot<br />
           </div>
+          <hr class="hr-menu" style="margin-top: 27px;"/>
         </form>
       </div>
     </div>

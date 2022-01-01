@@ -52,30 +52,16 @@ $(document).on("click", ".addtolist", function (event) {
 			let articleIndex = event.target.id;
 			let article = "";
 			if ($("#menu-history").css("display") == "block") {
-				article =
-					hist[
-						articleIndex.substring(
-							articleIndex.lastIndexOf("-") + 1
-						)
-					];
+				article = hist[articleIndex.substring(articleIndex.lastIndexOf("-") + 1)];
 			} else {
-				article =
-					list[
-						articleIndex.substring(
-							articleIndex.lastIndexOf("-") + 1
-						)
-					];
+				article = list[articleIndex.substring(articleIndex.lastIndexOf("-") + 1)];
 			}
-			let readingListIndex = list.findIndex(
-				(x) => x.headline === article.headline
-			);
+			let readingListIndex = list.findIndex((x) => x.headline === article.headline);
 			if (readingListIndex < 0) {
-				document.getElementById(articleIndex).innerHTML =
-					"- Remove from Reading List";
+				document.getElementById(articleIndex).innerHTML = "- Remove from Reading List";
 				addtoReadingList(list, article, hist);
 			} else {
-				document.getElementById(articleIndex).innerHTML =
-					"+ Add to Reading List";
+				document.getElementById(articleIndex).innerHTML = "+ Add to Reading List";
 				removeFromReadingList(list, article, readingListIndex, hist);
 			}
 		}
@@ -146,9 +132,7 @@ function addtoReadingList(readinglist, article, history) {
 	if (readinglist.length > 20) {
 		readinglist.shift();
 	}
-	let historyIndex = history.findIndex(
-		(x) => x.headline === article.headline
-	);
+	let historyIndex = history.findIndex((x) => x.headline === article.headline);
 	if (historyIndex >= 0) {
 		history[historyIndex].overlay = "- Remove from Reading List";
 	}
@@ -163,9 +147,7 @@ function addtoReadingList(readinglist, article, history) {
 
 function removeFromReadingList(readinglist, article, index, history) {
 	readinglist.splice(index, 1);
-	let historyIndex = history.findIndex(
-		(x) => x.headline === article.headline
-	);
+	let historyIndex = history.findIndex((x) => x.headline === article.headline);
 	if (historyIndex >= 0) {
 		history[historyIndex].overlay = "+ Add to Reading List";
 	}
@@ -182,46 +164,49 @@ function removeFromReadingList(readinglist, article, index, history) {
 
 /*------Settings Functions------*/
 var currentMode = "";
+var currentCategories = [];
 
 function saveSettings(event) {
 	let selections = document.getElementById("menu-settings").elements;
-	let mode = selections["mode"].value;
-	currentMode = mode;
+	currentMode = selections["mode"].value;
+	currentCategories = Array.prototype.slice
+		.call(selections["categories"])
+		.filter(function (x) {
+			return x.checked;
+		})
+		.map(function (x) {
+			return x.value;
+		});
 	chrome.storage.sync.set({
-		mode: mode,
+		mode: currentMode,
+		categories: currentCategories,
 	});
 }
 
 function restoreSettings() {
 	chrome.storage.sync.get(
 		{
-			mode: "",
+			mode: "light",
+			categories: [],
 		},
 		function (items) {
 			currentMode = items.mode;
 			document.getElementById(items.mode.toString()).checked = true;
 			if (items.mode === "dark") {
-				document.documentElement.style.setProperty(
-					"--background-color",
-					"#1C2026"
-				);
-				document.documentElement.style.setProperty(
-					"--headline-color",
-					"white"
-				);
-				document.documentElement.style.setProperty(
-					"--abstract-color",
-					"#cccccc"
-				);
-				document.documentElement.style.setProperty(
-					"--hr-color",
-					"#24292F"
-				);
-				document.documentElement.style.setProperty(
-					"--caption-color",
-					"#999999"
-				);
+				document.documentElement.style.setProperty("--background-color", "#1C2026");
+				document.documentElement.style.setProperty("--headline-color", "white");
+				document.documentElement.style.setProperty("--abstract-color", "#cccccc");
+				document.documentElement.style.setProperty("--hr-color", "#24292F");
+				document.documentElement.style.setProperty("--caption-color", "#999999");
 				setMenuDarkMode();
+			}
+			currentCategories = items.categories;
+			if (currentCategories.length === 0) {
+				document.getElementById("home").checked = true;
+				currentCategories.push("home");
+			}
+			for (let i = 0; i < items.categories.length; i++) {
+				document.getElementById(items.categories[i]).checked = true;
 			}
 		}
 	);
@@ -229,7 +214,6 @@ function restoreSettings() {
 
 //click mode toggle
 $(document).on("click", "#dark, #light", function () {
-	console.log(currentMode);
 	if (currentMode === "light") {
 		document.getElementById("dark").checked = true;
 		saveSettings();
@@ -239,9 +223,6 @@ $(document).on("click", "#dark, #light", function () {
 		saveSettings();
 		setMenuLightMode();
 	}
-	$(document).on("click", ".newtab", function () {
-		location.reload();
-	});
 });
 
 function setMenuDarkMode() {
@@ -250,7 +231,7 @@ function setMenuDarkMode() {
 	$(".dark").css("opacity", "1");
 	$(".dark, .light").css("color", "white");
 	$(".light").css("opacity", "0.5");
-	$(".menu-pages").css("background-color", "#1C2026");
+	$(".mode-container").css("background-color", "#1C2026");
 }
 
 function setMenuLightMode() {
@@ -259,12 +240,13 @@ function setMenuLightMode() {
 	$(".dark").css("opacity", "0.5");
 	$(".dark, .light").css("color", "black");
 	$(".light").css("opacity", "1");
-	$(".menu-pages").css("background-color", "white");
+	$(".mode-container").css("background-color", "white");
 }
+
+//click categories
+$(document).on("click", ".categories-container input", function () {});
 
 window.addEventListener("DOMContentLoaded", () => {
 	restoreSettings();
-	document
-		.getElementById("menu-settings")
-		.addEventListener("change", () => this.saveSettings());
+	document.getElementById("menu-settings").addEventListener("change", () => this.saveSettings());
 });

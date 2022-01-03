@@ -2,21 +2,35 @@ body {
 	position: relative;
 }
 
-.newtab,
-.menu-container {
+.newtab {
 	width: 100%;
+}
+.newtab,
+.menu-container2 {
 	position: absolute;
+}
+
+.menu-container2 {
+	width: 330px;
+	height: 100%;
+	overflow: visible;
+	display: flex;
+	flex-direction: row;
+	position: fixed;
 }
 
 .menu-container {
 	height: 100%;
 	width: 310px;
+	min-width: 310px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	transition: 0.1s;
 	font-family: Georgia, serif;
 	position: fixed;
+	position: relative;
+	z-index: 1;
 }
 
 .menu-bar {
@@ -26,10 +40,11 @@ body {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
-	background-color: var(--background-color);
+	background-color: transparent;
 }
 
-.menu-title {
+.menu-title,
+.addtolist-tab {
 	opacity: 0.1;
 	font-style: italic;
 	font-size: 15px;
@@ -37,17 +52,21 @@ body {
 	border: 0;
 	font-family: Georgia, serif;
 	color: var(--headline-color);
+	transition: 0.2s;
+	cursor: pointer;
 }
 
-.menu-title:hover {
-	color: var(--link-color);
-	cursor: pointer;
+.addtolist-tab {
+	padding-top: 11px;
+	height: 29px;
+	min-width: fit-content;
 }
 
 .menu-pages {
 	display: none;
 	overflow: scroll;
 	width: 100%;
+	height: 100%;
 }
 
 ::-webkit-scrollbar {
@@ -66,7 +85,9 @@ body {
 
 .menu-option {
 	width: 100%;
+	height: 100%;
 	margin: auto;
+	position: relative;
 }
 
 .menu-article {
@@ -219,7 +240,8 @@ body {
 	color: var(--headline-color);
 }
 
-.categories-container input {
+.categories-container input,
+.frequencies-container input {
 	margin-top: 12px;
 }
 
@@ -228,10 +250,21 @@ label {
 	cursor: pointer;
 }
 
-input[type="checkbox"] {
+.frequencies-container {
+	margin: auto;
+	font-style: italic;
+	width: 80%;
+	font-size: 13px;
+	color: var(--headline-color);
+	display: flex;
+	flex-direction: row;
 }
 
-.showcaption-container {
+.frequencies-container label {
+	margin-right: 9px;
+}
+
+.checks-container {
 	width: 80%;
 	height: 50px;
 	margin: auto;
@@ -263,9 +296,21 @@ input[type="checkbox"] {
 
 .reload:hover {
 	cursor: pointer;
-	border: 1px solid black;
+	border: 1px solid var(--headline-color);
 	padding-left: 40px;
 	padding-right: 40px;
 	padding-top: 10px;
 	padding-bottom: 10px;
+}
+
+.info-container {
+	width: 80%;
+	margin: auto;
+	padding-top: 40px;
+	padding-bottom: 15px;
+}
+
+.info {
+	text-align: center;
+	color: var(--caption-color);
 }

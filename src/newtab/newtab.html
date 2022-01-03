@@ -12,66 +12,81 @@
 
   <body>
     <div class="newtab" id="newtab"></div>
-    <div class="menu-container" id="menu-container">
-      <div class="menu-bar">
-        <button class="menu-title" id="history">History</button>
-        <button class="menu-title" id="readinglist">Reading List</button>
-        <button class="menu-title" id="settings">Settings</button>
-      </div>
-      <hr class="hr-menu" />
-      <div class="menu-pages" id="menu-pages">
-        <div class="menu-option" id="menu-history"></div>
-        <div class="menu-option" id="menu-readinglist"></div>
-        <form class="menu-option" id="menu-settings">
-          <div class="mode-container">
-            <div class="mode-toggle-container">
-              <div class="toggle-switch"></div>
-              <div class="mode-toggle">
-                <input type="radio" name="mode" id="light" value="light" checked />
-                <label for="light" class="light">Light</label>
-                <input type="radio" name="mode" id="dark" value="dark" />
-                <label for="dark" class="dark">Dark</label>
+    <div class="menu-container2">
+      <div class="menu-container" id="menu-container">
+        <div class="menu-bar">
+          <button class="menu-title" id="history">History</button>
+          <button class="menu-title" id="readinglist">Reading List</button>
+          <button class="menu-title" id="settings">Settings</button>
+        </div>
+        <hr class="hr-menu" />
+        <div class="menu-pages" id="menu-pages">
+          <div class="menu-option" id="menu-history"></div>
+          <div class="menu-option" id="menu-readinglist"></div>
+          <form class="menu-option" id="menu-settings">
+            <div class="mode-container">
+              <div class="mode-toggle-container">
+                <div class="toggle-switch"></div>
+                <div class="mode-toggle">
+                  <input type="radio" name="mode" id="light" value="light" checked />
+                  <label for="light" class="light">Light</label>
+                  <input type="radio" name="mode" id="dark" value="dark" />
+                  <label for="dark" class="dark">Dark</label>
+                </div>
               </div>
             </div>
-          </div>
-          <hr class="hr-menu" style="margin-top: 7px" />
-          <div class="categories-title">News categories included:</div>
-          <div class="categories-container">
-            <label><input type="checkbox" name="categories" id="home" value="home" /> Headlines<br /></label>
-            <label><input type="checkbox" name="categories" id="US" value="US" /> US<br /></label>
-            <label><input type="checkbox" name="categories" id="World" value="World" /> World<br /></label>
-            <label><input type="checkbox" name="categories" id="arts" value="arts" /> Arts<br /></label>
-            <label><input type="checkbox" name="categories" id="automobiles" value="automobiles" /> Automobiles<br /></label>
-            <label><input type="checkbox" name="categories" id="books" value="books" /> Books<br /></label>
-            <label><input type="checkbox" name="categories" id="business" value="business" /> Business<br /></label>
-            <label><input type="checkbox" name="categories" id="fashion" value="fashion" /> Fashion<br /></label>
-            <label><input type="checkbox" name="categories" id="food" value="food" /> Food<br /></label>
-            <label><input type="checkbox" name="categories" id="health" value="health" /> Health<br /></label>
-            <label><input type="checkbox" name="categories" id="insider" value="insider" /> Insider<br /></label>
-            <label><input type="checkbox" name="categories" id="magazine" value="magazine" /> Magazine<br /></label>
-            <label><input type="checkbox" name="categories" id="movies" value="movies" /> Movies<br /></label>
-            <label><input type="checkbox" name="categories" id="opinion" value="opinion" /> Opinion<br /></label>
-            <label><input type="checkbox" name="categories" id="politics" value="politics" /> Politics<br /></label>
-            <label><input type="checkbox" name="categories" id="realestate" value="realestate" /> Real Estate<br /></label>
-            <label><input type="checkbox" name="categories" id="science" value="science" /> Science <br /></label>
-            <label><input type="checkbox" name="categories" id="sports" value="sports" /> Sports<br /></label>
-            <label><input type="checkbox" name="categories" id="sundayreview" value="sundayreview" /> Sunday Review<br /></label>
-            <label><input type="checkbox" name="categories" id="technology" value="technology" /> Technology<br /></label>
-            <label><input type="checkbox" name="categories" id="theater" value="theater" /> Theater<br /></label>
-            <label><input type="checkbox" name="categories" id="t-magazine" value="t-magazine" /> Style Magazine<br /></label>
-            <label><input type="checkbox" name="categories" id="travel" value="travel" /> Travel<br /></label>
-            <label><input type="checkbox" name="categories" id="upshot" value="upshot" /> The Upshot<br /></label>
-            <label><input type="checkbox" name="select" id="selectall" value="selectall" /> Select All<br /></label>
-            <label><input type="checkbox" name="select" id="selectnone" value="selectnone" /> Select None<br /></label>
-          </div>
-          <hr class="hr-menu" style="margin-top: 27px" />
-          <div class="showcaption-container">
-            <label><input type="checkbox" name="showcaption" id="showcaption" value="showcaption" /> Always show image caption<br /></label>
-          </div>
-          <hr class="hr-menu" style="margin-top: 7px" />
-          <div class="reload-container"><div class="reload">Reload Tab</div></div>
-        </form>
+            <hr class="hr-menu" style="margin-top: 7px" />
+            <div class="categories-title">News categories included:</div>
+            <div class="categories-container">
+              <label><input type="checkbox" name="categories" id="home" value="home" /> Headlines<br /></label>
+              <label><input type="checkbox" name="categories" id="US" value="US" /> US<br /></label>
+              <label><input type="checkbox" name="categories" id="World" value="World" /> World<br /></label>
+              <label><input type="checkbox" name="categories" id="arts" value="arts" /> Arts<br /></label>
+              <label><input type="checkbox" name="categories" id="automobiles" value="automobiles" /> Automobiles<br /></label>
+              <label><input type="checkbox" name="categories" id="books" value="books" /> Books<br /></label>
+              <label><input type="checkbox" name="categories" id="business" value="business" /> Business<br /></label>
+              <label><input type="checkbox" name="categories" id="fashion" value="fashion" /> Fashion<br /></label>
+              <label><input type="checkbox" name="categories" id="food" value="food" /> Food<br /></label>
+              <label><input type="checkbox" name="categories" id="health" value="health" /> Health<br /></label>
+              <label><input type="checkbox" name="categories" id="insider" value="insider" /> Insider<br /></label>
+              <label><input type="checkbox" name="categories" id="magazine" value="magazine" /> Magazine<br /></label>
+              <label><input type="checkbox" name="categories" id="movies" value="movies" /> Movies<br /></label>
+              <label><input type="checkbox" name="categories" id="opinion" value="opinion" /> Opinion<br /></label>
+              <label><input type="checkbox" name="categories" id="politics" value="politics" /> Politics<br /></label>
+              <label><input type="checkbox" name="categories" id="realestate" value="realestate" /> Real Estate<br /></label>
+              <label><input type="checkbox" name="categories" id="science" value="science" /> Science <br /></label>
+              <label><input type="checkbox" name="categories" id="sports" value="sports" /> Sports<br /></label>
+              <label><input type="checkbox" name="categories" id="sundayreview" value="sundayreview" /> Sunday Review<br /></label>
+              <label><input type="checkbox" name="categories" id="technology" value="technology" /> Technology<br /></label>
+              <label><input type="checkbox" name="categories" id="theater" value="theater" /> Theater<br /></label>
+              <label><input type="checkbox" name="categories" id="t-magazine" value="t-magazine" /> Style Magazine<br /></label>
+              <label><input type="checkbox" name="categories" id="travel" value="travel" /> Travel<br /></label>
+              <label><input type="checkbox" name="categories" id="upshot" value="upshot" /> The Upshot<br /></label>
+              <label><input type="checkbox" name="select" id="selectall" value="selectall" /> Select All<br /></label>
+              <label><input type="checkbox" name="select" id="selectnone" value="selectnone" /> Select None<br /></label>
+            </div>
+            <div class="categories-title" id="showfrequencies">Frequency of headlines:</div>
+            <div class="frequencies-container" id="showfrequencies">
+              <label><input type="checkbox" class="frequencies" name="frequencies" id="default" value="default" /> default<br /></label>
+              <label><input type="checkbox" class="frequencies" name="frequencies" id="25%" value="25%" /> 25%<br /></label>
+              <label><input type="checkbox" class="frequencies" name="frequencies" id="50%" value="50%" /> 50%<br /></label>
+              <label><input type="checkbox" class="frequencies" name="frequencies" id="75%" value="75%" /> 75%<br /></label>
+            </div>
+            <hr class="hr-menu" style="margin-top: 27px" />
+            <div class="checks-container">
+              <label><input type="checkbox" name="showcaption" id="showcaption" value="showcaption" /> Always show image caption<br /></label>
+            </div>
+            <hr class="hr-menu" style="margin-top: 7px" />
+            <div class="reload-container"><div class="reload">Reload Tab</div></div>
+            <div class="info-container">
+              <div class="info">
+                Created by Annie Ma in 2022. Please send your thoughts, questions, and feature requests to anniema6@stanford.edu!
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
+      <div class="addtolist-tab" id="addtolist-tab"></div>
     </div>
   </body>
 </html>

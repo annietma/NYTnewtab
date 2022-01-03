@@ -1,11 +1,27 @@
-//show menu titles when hovering over menu container
+//hover over new tab add to list button
 $(document)
-	.on("mouseenter", ".menu-container", function () {
-		$(".menu-title").fadeTo(100, 1);
+	.on("mouseenter", ".addtolist-tab", function () {
+		$(".addtolist-tab").css("color", "var(--link-color)");
+		if (document.getElementById("addtolist-tab").innerHTML === "+") {
+			document.getElementById("addtolist-tab").innerHTML = "+ Add to Reading List";
+		} else if (document.getElementById("addtolist-tab").innerHTML === "-") {
+			document.getElementById("addtolist-tab").innerHTML = "- Remove from Reading List";
+		}
 	})
-	.on("mouseleave", ".menu-container", function () {
+	.on("mouseleave", ".addtolist-tab", function () {
+		$(".addtolist-tab").css("color", "var(--headline-color)");
+	});
+
+//show menu titles when hovering over menu container 2
+$(document)
+	.on("mouseenter", ".menu-container2", function () {
 		if (!$(".menu-pages").is(":visible")) {
-			$(".menu-title").fadeTo(100, 0.1);
+			$(".menu-title, .addtolist-tab").fadeTo(100, 1);
+		}
+	})
+	.on("mouseleave", ".menu-container2", function () {
+		if (!$(".menu-pages").is(":visible")) {
+			$(".menu-title, .addtolist-tab").fadeTo(100, 0.1);
 		}
 	});
 
@@ -14,86 +30,128 @@ $(document)
 	.on("mouseenter", ".menu-title", function (event) {
 		if (!$(".menu-pages").is(":visible")) {
 			$(".menu-title").css("color", "var(--headline-color)");
-			$("#" + event.target.id).css("color", "#326890");
+			$("#" + event.target.id).css("color", "var(--link-color)");
 		}
 	})
 	.on("mouseleave", ".menu-title", function () {
 		if (!$(".menu-pages").is(":visible")) {
 			$(".menu-title").css("color", "var(--headline-color)");
+			$("#" + event.target.id).css("color", "var(--headline-color)");
 		}
 	});
 
-//show menu when menu options are clicked
+//show appropriate menu page when menu options are clicked,
+//or exit menu if clicking title of active menu page
 $(document).on("click", ".menu-title", function (event) {
-	//show containers/menu bar
-	$(".menu-container").css("background-color", "var(--background-color)");
-	$(".menu-container").css("box-shadow", "0 2px 15px rgba(0, 0, 0, 0.25)");
-	$(".hr-menu").fadeTo(200, 1);
-	$(".menu-pages").fadeTo(200, 1);
-	$(".menu-title").css("color", "var(--headline-color)");
-	$("#" + event.target.id).css("color", "var(--link-color)");
-	$(".headline").css("z-index", "0");
-	//show menu page
-	$(".menu-option").css("display", "none");
-	$("#menu-" + event.target.id).css("display", "block");
+	if ($("#menu-" + event.target.id).is(":visible")) {
+		exitMenu();
+		$(".menu-title, .addtolist-tab").fadeTo(100, 1);
+		$("#" + event.target.id).css("color", "var(--link-color)");
+	} else {
+		//show containers/menu bar
+		$(".menu-container").css("background-color", "var(--background-color)");
+		$(".menu-container").css("box-shadow", "0 2px 15px rgba(0, 0, 0, 0.25)");
+		$(".addtolist-tab").css("display", "none");
+		$(".menu-bar").css("background-color", "var(--background-color)");
+		$(".hr-menu").fadeTo(200, 1);
+		$(".menu-pages").fadeTo(200, 1);
+		$(".menu-title").css("color", "var(--headline-color)");
+		$("#" + event.target.id).css("color", "var(--link-color)");
+		$(".headline").css("z-index", "0");
+		//show menu page
+		$(".menu-option").css("display", "none");
+		$("#menu-" + event.target.id).css("display", "block");
+	}
 });
 
 //add/remove from reading list
-$(document).on("click", ".addtolist", function (event) {
+$(document).on("click", ".addtolist, .addtolist-tab", function (event) {
 	chrome.storage.local.get(
 		{
 			history: [],
 			readinglist: [],
 		},
 		function (items) {
-			let hist = items.history;
-			let list = items.readinglist;
+			let historyMaster = items.history;
+			let readinglistMaster = items.readinglist;
 
 			let articleIndex = event.target.id;
+
 			let article = "";
-			if ($("#menu-history").css("display") == "block") {
-				article = hist[articleIndex.substring(articleIndex.lastIndexOf("-") + 1)];
+			if (event.target.className === "addtolist-tab") {
+				article = historyMaster[historyMaster.length - 1];
 			} else {
-				article = list[articleIndex.substring(articleIndex.lastIndexOf("-") + 1)];
+				if ($("#menu-history").css("display") == "block") {
+					article = historyMaster[articleIndex.substring(articleIndex.lastIndexOf("-") + 1)];
+				} else {
+					article = readinglistMaster[articleIndex.substring(articleIndex.lastIndexOf("-") + 1)];
+				}
 			}
-			let readingListIndex = list.findIndex((x) => x.headline === article.headline);
+
+			let elementID = articleIndex;
+			if (event.target.className === "addtolist-tab") {
+				elementID = "addtolist-tab";
+			}
+
+			let readingListIndex = readinglistMaster.findIndex((x) => x.headline === article.headline);
 			if (readingListIndex < 0) {
-				document.getElementById(articleIndex).innerHTML = "- Remove from Reading List";
-				addtoReadingList(list, article, hist);
+				document.getElementById(elementID).innerHTML = "- Remove from Reading List";
+				addtoReadingList(readinglistMaster, article, historyMaster);
 			} else {
-				document.getElementById(articleIndex).innerHTML = "+ Add to Reading List";
-				removeFromReadingList(list, article, readingListIndex, hist);
+				document.getElementById(elementID).innerHTML = "+ Add to Reading List";
+				removeFromReadingList(readinglistMaster, article, readingListIndex, historyMaster);
+			}
+
+			if (event.target.className === "addtolist-tab") {
+				setUpMenuArticles(historyMaster, "menu-history", true);
 			}
 		}
 	);
 });
 
 //exit menu
-$(document).on("click", ".newtab", function () {
+function exitMenu() {
 	$(".menu-container").css("background-color", "");
 	$(".menu-container").css("box-shadow", "");
+	$(".menu-bar").css("background-color", "transparent");
 	$(".hr-menu").fadeOut(100);
-	$(".menu-title").fadeTo(100, 0.1);
-	$(".menu-title").css("color", "black");
+	$(".menu-title, .addtolist-tab").fadeTo(100, 0.1);
+	$(".menu-title").css("color", "var(--headline-color)");
 	$(".menu-pages").fadeOut(100);
 	$(".headline").css("z-index", "2");
+}
+$(document).on("click", ".newtab", function () {
+	exitMenu();
 });
-
-//exit menu helper
 $(".menu-pages").click(function (event) {
 	event.stopPropagation();
 });
 
-function setUpMenuArticles(data, menuoption) {
+function setUpMenuArticles(data, menuoption, refreshHistory = false) {
+	if (refreshHistory) {
+		document.getElementById("menu-history").innerHTML = "";
+	}
+
 	if (menuoption === "menu-readinglist" && data.length === 0) {
 		document.getElementById(menuoption).innerHTML +=
 			"<div class='menu-article' style='pointer-events: none;'>" +
 			"<div class='menu-abstract' >" +
-			"You currently have no items in your reading list. You can add up to 20 items by hovering and clicking over article images." +
+			"You currently have no items in your reading list. You can add up to 50 items by hovering and clicking over article images." +
 			"</div>" +
 			"</div>";
 	}
-	for (let i = data.length - 1; i >= 0; i--) {
+
+	let start = data.length - 1;
+	let end = -1;
+	let num = 0;
+	if (menuoption == "menu-readinglist") {
+		start = 0;
+		end = data.length;
+		num = 1;
+	}
+
+	let i = start;
+	while (i != end) {
 		document.getElementById(menuoption).innerHTML +=
 			"<div class='menu-article'>" +
 			"<div class='menu-image-container'>" +
@@ -111,13 +169,24 @@ function setUpMenuArticles(data, menuoption) {
 			"<a href='" +
 			data[i].URL +
 			"' class='menu-headline'>" +
+			(num ? num + ". " : "") +
 			data[i].headline +
 			"</a>" +
 			"<div class='menu-abstract'>" +
 			data[i].abstract +
 			"</div>" +
 			"</div>";
+		if (menuoption === "menu-history") {
+			i--;
+		} else {
+			i++;
+			num++;
+		}
 	}
+	document.getElementById(menuoption).innerHTML +=
+		"<div class='info-container'><div class='info'>This list is capped at " +
+		(menuoption === "menu-history" ? 100 : 50) +
+		"articles, after which the oldest articles will be removed.</div></div>";
 }
 
 function addtoReadingList(readinglist, article, history) {
@@ -129,7 +198,7 @@ function addtoReadingList(readinglist, article, history) {
 		overlay: "- Remove from Reading List",
 	};
 	readinglist.push(newArticle);
-	if (readinglist.length > 20) {
+	if (readinglist.length > 100) {
 		readinglist.shift();
 	}
 	let historyIndex = history.findIndex((x) => x.headline === article.headline);
@@ -165,6 +234,7 @@ function removeFromReadingList(readinglist, article, index, history) {
 /*------Settings Functions------*/
 var currentMode = "light";
 var currentCategories = [];
+var currentFrequency = "default";
 
 function saveSettings(event) {
 	let selections = document.getElementById("menu-settings").elements;
@@ -179,9 +249,27 @@ function saveSettings(event) {
 			return x.value;
 		});
 
+	if (shouldShowFrequencies()) {
+		$("#showfrequencies").css("display", "flex");
+		$("#showfrequencies label").css("display", "");
+	} else {
+		$("#showfrequencies").css("display", "none");
+		$("#showfrequencies label").css("display", "none");
+	}
+	frequency = Array.prototype.slice
+		.call(selections["frequencies"])
+		.filter(function (x) {
+			return x.checked;
+		})
+		.map(function (x) {
+			return x.value;
+		});
+	currentFrequency = frequency[0];
+
 	chrome.storage.sync.set({
 		mode: currentMode,
 		categories: currentCategories,
+		headlinefrequency: currentFrequency,
 		showcaption: selections["showcaption"].checked,
 	});
 }
@@ -191,9 +279,11 @@ function restoreSettings() {
 		{
 			mode: "light",
 			categories: [],
+			headlinefrequency: "default",
 			showcaption: false,
 		},
 		function (items) {
+			//light/dark mode
 			currentMode = items.mode;
 			document.getElementById(items.mode.toString()).checked = true;
 			if (items.mode === "dark") {
@@ -204,7 +294,7 @@ function restoreSettings() {
 				document.documentElement.style.setProperty("--caption-color", "#999999");
 				setMenuDarkMode();
 			}
-
+			//categories
 			currentCategories = items.categories;
 			if (currentCategories.length === 0) {
 				document.getElementById("home").checked = true;
@@ -215,7 +305,18 @@ function restoreSettings() {
 			for (let i = 0; i < items.categories.length; i++) {
 				document.getElementById(items.categories[i]).checked = true;
 			}
+			//headline frequencies
+			currentFrequency = items.headlinefrequency;
+			if (shouldShowFrequencies()) {
+				$("#showfrequencies").css("display", "flex");
+				$("#showfrequencies label").css("display", "");
+			} else {
+				$("#showfrequencies").css("display", "none");
+				$("#showfrequencies label").css("display", "none");
+			}
+			document.getElementById(items.headlinefrequency).checked = true;
 
+			//always show caption
 			if (items.showcaption === true) {
 				document.documentElement.style.setProperty("--caption-display", "block");
 				document.getElementById("showcaption").checked = true;
@@ -264,6 +365,9 @@ $(document).on("click", "#selectall", function () {
 			toCheck[i].checked = true;
 		}
 	}
+	$(document).on("click", "[name='categories']", function () {
+		document.getElementById("selectall").checked = false;
+	});
 });
 
 //click select none
@@ -273,6 +377,36 @@ $(document).on("click", "#selectnone", function () {
 		let toCheck = document.getElementsByName("categories");
 		for (let i = 0; i < toCheck.length; i++) {
 			toCheck[i].checked = false;
+		}
+	}
+	$(document).on("click", "[name='categories']", function () {
+		document.getElementById("selectnone").checked = false;
+	});
+});
+
+//determine whether to show headline frequencies
+function shouldShowFrequencies() {
+	let categories = document.getElementsByName("categories");
+	if (categories[0].checked === false) {
+		return false;
+	}
+	for (let i = 1; i < categories.length; i++) {
+		if (categories[i].checked === true) {
+			return true;
+		}
+	}
+	return false;
+}
+
+//click headline frequency
+$(document).on("click", ".frequencies", function (event) {
+	let checkboxes = document.getElementsByName("frequencies");
+	for (let i = 0; i < checkboxes.length; i++) {
+		if (checkboxes[i].id === event.target.id) {
+			console.log("hi");
+			checkboxes[i].checked = true;
+		} else {
+			checkboxes[i].checked = false;
 		}
 	}
 });

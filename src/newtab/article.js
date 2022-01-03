@@ -4,10 +4,12 @@ var URL = "URL";
 var abstract = "abstract";
 var imageURL = "imageURL";
 var caption = "caption";
+var historyMaster = [];
+var readinglistMaster = [];
 
 function getRandomInt(min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
+	min = Math.ceil(min); //inclusive
+	max = Math.floor(max); //exclusive
 	return Math.floor(Math.random() * (max - min) + min);
 }
 
@@ -29,6 +31,12 @@ function getCategory() {
 		currentCategories.push("home");
 	}
 	var i = getRandomInt(0, currentCategories.length);
+	if (currentFrequency != "default") {
+		var percent = parseInt(currentFrequency);
+		if (getRandomInt(1, 101) <= percent) {
+			return "home";
+		}
+	}
 	return currentCategories[i];
 }
 
@@ -47,7 +55,7 @@ function getNews() {
 			headline = response.results[i].title;
 			URL = response.results[i].url;
 			abstract = response.results[i].abstract;
-			if (response.results[i].multimedia.length > 0) {
+			if (response.results[i].multimedia != undefined) {
 				imageURL = response.results[i].multimedia[0].url;
 				caption = response.results[i].multimedia[0].caption;
 			}
@@ -75,13 +83,19 @@ function getNews() {
 			storeNews(response);
 		})
 		.catch((err) => {
+			console.log(err);
 			console.error(err);
-			document.getElementById("newtab").innerHTML +=
-				"<div>" +
-				"<div class='text headline'>Error 429: Too Many Requests</div>" +
-				"<div class='text abstract'>There have been too many requests to The New York Times. Please try again in a minute.</div>" +
-				"<hr class='hr'>" +
-				"</div>";
+			if (!window.navigator.onLine) {
+				document.getElementById("newtab").innerHTML +=
+					"<div class='text headline'>Failed to fetch article</div>" +
+					"<div class='text abstract'>Please check your internet connection.</div>" +
+					"<hr class='hr'>";
+			} else {
+				document.getElementById("newtab").innerHTML +=
+					"<div class='text headline'>Error 429: Too Many Requests</div>" +
+					"<div class='text abstract'>There have been too many requests to The New York Times. Please try again in a minute.</div>" +
+					"<hr class='hr'>";
+			}
 		});
 }
 
@@ -92,8 +106,8 @@ function storeNews(response) {
 			readinglist: [],
 		},
 		function (items) {
-			let hist = items.history;
-			let list = items.readinglist;
+			historyMaster = items.history;
+			readinglistMaster = items.readinglist;
 
 			let newArticle = {
 				URL: URL,
@@ -101,46 +115,47 @@ function storeNews(response) {
 				abstract: abstract,
 				imageURL: imageURL,
 			};
-			let indexofDuplicate = hist.findIndex((x) => x.headline === newArticle.headline);
+			let indexofDuplicate = historyMaster.findIndex((x) => x.headline === newArticle.headline);
 			if (indexofDuplicate >= 0) {
-				hist.splice(indexofDuplicate, 1);
+				historyMaster.splice(indexofDuplicate, 1);
 			}
-			let readingListIndex = list.findIndex((x) => x.headline === newArticle.headline);
+			let readingListIndex = readinglistMaster.findIndex((x) => x.headline === newArticle.headline);
 			if (readingListIndex < 0) {
 				newArticle.overlay = "+ Add to Reading List";
+				document.getElementById("addtolist-tab").innerHTML = "+";
 			} else {
 				newArticle.overlay = "- Remove from Reading List";
+				document.getElementById("addtolist-tab").innerHTML = "-";
 			}
-			hist.push(newArticle);
-			if (hist.length > 100) {
-				hist.shift();
+			historyMaster.push(newArticle);
+			if (historyMaster.length > 50) {
+				historyMaster.shift();
 			}
 			chrome.storage.local.set({
-				history: hist,
+				history: historyMaster,
 			});
 
-			setUpMenuArticles(hist, "menu-history");
-		}
-	);
-}
-
-function initializeReadingList() {
-	chrome.storage.local.get(
-		{
-			readinglist: [],
-		},
-		function (items) {
-			setUpMenuArticles(items.readinglist, "menu-readinglist");
+			setUpMenuArticles(historyMaster, "menu-history", true);
 		}
 	);
 }
 
 window.onload = function intitialize() {
 	getNews();
-	initializeReadingList();
+	chrome.storage.local.get(
+		{
+			readinglist: [],
+			history: [],
+		},
+		function (items) {
+			readinglistMaster = items.readinglist;
+			setUpMenuArticles(items.readinglist, "menu-readinglist");
+			setUpMenuArticles(items.history, "menu-history");
+		}
+	);
 };
 
 /*------jQuery------*/
 $(document).on("mouseenter", ".image", function () {
-	$(".caption").fadeTo(150, 1);
+	$(".caption").fadeTo(100, 1);
 });

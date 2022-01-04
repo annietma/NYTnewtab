@@ -5,6 +5,7 @@ This Chrome extension provides a fast, elegant interface for you to stay up to d
 ![1](images/1.png)
 ![2](images/2.png)
 ![3](images/3.png)
+![4](images/4.png)
 
 ### Features
 

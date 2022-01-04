@@ -7,6 +7,8 @@ This Chrome extension provides a fast, elegant interface for you to stay up to d
 ![3](images/3.png)
 ![4](images/4.png)
 
+Not affiliated with The New York Times.
+
 ### Features
 
 -   Each new tab page will generate a random article from The New York Times’ homepage

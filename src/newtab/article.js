@@ -31,7 +31,8 @@ function getCategory() {
 		currentCategories.push("home");
 	}
 	var i = getRandomInt(0, currentCategories.length);
-	if (currentFrequency != "default") {
+
+	if (currentCategories.includes("home") && currentFrequency != "default") {
 		var percent = parseInt(currentFrequency);
 		if (getRandomInt(1, 101) <= percent) {
 			return "home";

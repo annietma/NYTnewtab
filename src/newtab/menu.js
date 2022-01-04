@@ -21,7 +21,7 @@ $(document)
 	})
 	.on("mouseleave", ".menu-container2", function () {
 		if (!$(".menu-pages").is(":visible")) {
-			$(".menu-title, .addtolist-tab").fadeTo(100, 0.1);
+			$(".menu-title, .addtolist-tab").fadeTo(100, 0.3);
 		}
 	});
 

@@ -11,15 +11,5 @@
   "chrome_url_overrides": {
     "newtab": "src/newtab/newtab.html"
   },
-  "browser_action": {
-      "default_popup": "src/options/options.html"
-  },
-  "options_ui": {
-    "page": "src/options/options.html",
-    "open_in_tab": true
-  },
-  "permissions": [
-    "storage",
-    "tabs"
-  ]
+  "permissions": ["storage", "tabs"]
 }

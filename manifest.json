@@ -1,5 +1,5 @@
 {
-  "name": "NYT New Tab",
+  "name": "NYT Headlines New Tab",
   "version": "1.1",
   "manifest_version": 2,
   "description": "Keep up with the headlines in your new tab. Not affiliated with The New York Times.",
@@ -11,5 +11,5 @@
   "chrome_url_overrides": {
     "newtab": "src/newtab/newtab.html"
   },
-  "permissions": ["storage", "tabs"]
+  "permissions": ["storage"]
 }

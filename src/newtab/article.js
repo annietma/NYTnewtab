@@ -6,6 +6,7 @@ var imageURL = "imageURL";
 var caption = "caption";
 var historyMaster = [];
 var readinglistMaster = [];
+var historyCap = 200;
 
 function getRandomInt(min, max) {
 	min = Math.ceil(min); //inclusive
@@ -129,7 +130,7 @@ function storeNews(response) {
 				document.getElementById("addtolist-tab").innerHTML = "-";
 			}
 			historyMaster.push(newArticle);
-			if (historyMaster.length > 50) {
+			if (historyMaster.length > historyCap) {
 				historyMaster.shift();
 			}
 			chrome.storage.local.set({

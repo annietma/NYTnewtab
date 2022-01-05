@@ -61,6 +61,12 @@ $(document).on("click", ".menu-title", function (event) {
 		//show menu page
 		$(".menu-option").css("display", "none");
 		$("#menu-" + event.target.id).css("display", "block");
+		//hide search bar in settings
+		if (event.target.id === "settings") {
+			$(".searchbar-container").css("display", "none");
+		} else {
+			$(".searchbar-container").css("display", "flex");
+		}
 	}
 });
 
@@ -127,12 +133,42 @@ $(".menu-pages").click(function (event) {
 	event.stopPropagation();
 });
 
-function setUpMenuArticles(data, menuoption, refreshHistory = false) {
+//search articles
+$(document).on("input", "#searchbar", function (input) {
+	let data = historyMaster;
+	let menuoption = "menu-history";
+	let search = input.target.value.toLowerCase();
+	if ($("#menu-readinglist").css("display") === "block") {
+		data = readinglistMaster;
+		menuoption = "menu-readinglist";
+	}
+	if (search === "") {
+		setUpMenuArticles(data, menuoption, false, true);
+		return;
+	}
+	matches = [];
+	not_matches = [];
+	data.forEach((article) =>
+		article.headline.toLowerCase().includes(search) || article.abstract.toLowerCase().includes(search)
+			? matches.push(article)
+			: not_matches.push(article)
+	);
+	let search_tokenized = search.split(" ").filter(String);
+	let more_matches = not_matches.filter((article) =>
+		search_tokenized.every((token) => article.headline.toLowerCase().includes(token) || article.abstract.toLowerCase().includes(token))
+	);
+	matches = matches.concat(more_matches);
+	$("#" + menuoption + " .menu-article").remove();
+	$("#" + menuoption + " .info-container").remove();
+	setUpMenuArticles(matches, menuoption, false, false);
+});
+
+function setUpMenuArticles(data, menuoption, refreshHistory = false, showInfo = true) {
 	if (refreshHistory) {
 		document.getElementById("menu-history").innerHTML = "";
 	}
 
-	if (menuoption === "menu-readinglist" && data.length === 0) {
+	if (menuoption === "menu-readinglist" && data.length === 0 && showInfo) {
 		document.getElementById(menuoption).innerHTML +=
 			"<div class='menu-article' style='pointer-events: none;'>" +
 			"<div class='menu-abstract' >" +
@@ -183,10 +219,16 @@ function setUpMenuArticles(data, menuoption, refreshHistory = false) {
 			num++;
 		}
 	}
-	document.getElementById(menuoption).innerHTML +=
-		"<div class='info-container'><div class='info'>This list is capped at " +
-		(menuoption === "menu-history" ? 100 : 50) +
-		"articles, after which the oldest articles will be removed.</div></div>";
+	if (showInfo && !(menuoption === "menu-readinglist" && data.length === 0)) {
+		document.getElementById(menuoption).innerHTML +=
+			"<div class='info-container'><div class='info'>This list is capped at " +
+			(menuoption === "menu-history" ? historyCap : 50) +
+			" articles, after which the oldest articles will be removed.</div></div>";
+	}
+	if (data.length === 0 && !showInfo) {
+		document.getElementById(menuoption).innerHTML +=
+			"<div class='info-container'><div class='info'>There are no articles that match your search.</div></div>";
+	}
 }
 
 function addtoReadingList(readinglist, article, history) {

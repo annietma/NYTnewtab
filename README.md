@@ -11,9 +11,10 @@ Not affiliated with The New York Times.
 
 ### Features
 
--   Each new tab page will generate a random article from The New York Times’ homepage
+-   Each new tab page displays a random headline from The New York Times
 -   History list keeps track of recently loaded articles
 -   Reading list lets you save articles for later
+-   Search for articles in the history and reading list
 -   Light/Dark mode!
 -   Specify which of 24 different news categories you see
 

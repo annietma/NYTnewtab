@@ -161,3 +161,9 @@ window.onload = function intitialize() {
 $(document).on("mouseenter", ".image", function () {
 	$(".caption").fadeTo(100, 1);
 });
+
+// Set uninstall URL
+var uninstallGoogleFormLink = "https://forms.gle/oiNaYdcUSNVSazS66";
+if (chrome.runtime.setUninstallURL) {
+	chrome.runtime.setUninstallURL(uninstallGoogleFormLink);
+}

@@ -49,6 +49,7 @@ $(document).on("click", ".menu-title", function (event) {
 		$("#" + event.target.id).css("color", "var(--link-color)");
 	} else {
 		//show containers/menu bar
+		$(".headline").css("z-index", "0");
 		$(".menu-container").css("background-color", "var(--background-color)");
 		$(".menu-container").css("box-shadow", "0 2px 15px rgba(0, 0, 0, 0.25)");
 		$(".addtolist-tab").css("display", "none");
@@ -57,19 +58,18 @@ $(document).on("click", ".menu-title", function (event) {
 		$(".menu-pages").fadeTo(200, 1);
 		$(".menu-title").css("color", "var(--headline-color)");
 		$("#" + event.target.id).css("color", "var(--link-color)");
-		$(".headline").css("z-index", "0");
 		//show menu page
 		$(".menu-option").css("display", "none");
 		$("#menu-" + event.target.id).css("display", "block");
-		//hide search bar in settings
-		if (event.target.id === "settings") {
-			$(".searchbar-container").css("display", "none");
-		} else {
-			$(".searchbar-container").css("display", "flex");
+		//manage search bar
+		$(".searchbar-container").css("display", "none");
+		if (event.target.id === "history") {
+			$("#searchbar-history").css("display", "flex");
+		} else if (event.target.id === "readinglist") {
+			$("#searchbar-readinglist").css("display", "flex");
 		}
 	}
 });
-
 //add/remove from reading list
 $(document).on("click", ".addtolist, .addtolist-tab", function (event) {
 	chrome.storage.local.get(
@@ -81,20 +81,20 @@ $(document).on("click", ".addtolist, .addtolist-tab", function (event) {
 			let historyMaster = items.history;
 			let readinglistMaster = items.readinglist;
 
-			let articleIndex = event.target.id;
+			let articleHeadline = event.target.id;
 
 			let article = "";
 			if (event.target.className === "addtolist-tab") {
 				article = historyMaster[historyMaster.length - 1];
 			} else {
 				if ($("#menu-history").css("display") == "block") {
-					article = historyMaster[articleIndex.substring(articleIndex.lastIndexOf("-") + 1)];
+					article = historyMaster[historyMaster.findIndex((x) => x.headline === articleHeadline)];
 				} else {
-					article = readinglistMaster[articleIndex.substring(articleIndex.lastIndexOf("-") + 1)];
+					article = readinglistMaster[readinglistMaster.findIndex((x) => x.headline === articleHeadline)];
 				}
 			}
 
-			let elementID = articleIndex;
+			let elementID = articleHeadline;
 			if (event.target.className === "addtolist-tab") {
 				elementID = "addtolist-tab";
 			}
@@ -134,17 +134,13 @@ $(".menu-pages").click(function (event) {
 });
 
 //search articles
-$(document).on("input", "#searchbar", function (input) {
+$(document).on("input", ".searchbar", function (input) {
 	let data = historyMaster;
 	let menuoption = "menu-history";
 	let search = input.target.value.toLowerCase();
 	if ($("#menu-readinglist").css("display") === "block") {
 		data = readinglistMaster;
 		menuoption = "menu-readinglist";
-	}
-	if (search === "") {
-		setUpMenuArticles(data, menuoption, false, true);
-		return;
 	}
 	matches = [];
 	not_matches = [];
@@ -160,12 +156,15 @@ $(document).on("input", "#searchbar", function (input) {
 	matches = matches.concat(more_matches);
 	$("#" + menuoption + " .menu-article").remove();
 	$("#" + menuoption + " .info-container").remove();
-	setUpMenuArticles(matches, menuoption, false, false);
+	setUpMenuArticles(matches, menuoption, false, false, false);
 });
 
-function setUpMenuArticles(data, menuoption, refreshHistory = false, showInfo = true) {
+function setUpMenuArticles(data, menuoption, refreshHistory = false, refreshList = false, showInfo = true) {
 	if (refreshHistory) {
 		document.getElementById("menu-history").innerHTML = "";
+	}
+	if (refreshList) {
+		document.getElementById("menu-readinglist").innerHTML = "";
 	}
 
 	if (menuoption === "menu-readinglist" && data.length === 0 && showInfo) {
@@ -196,8 +195,8 @@ function setUpMenuArticles(data, menuoption, refreshHistory = false, showInfo = 
 			"' id='image-" +
 			i +
 			"'>" +
-			"<div class='addtolist' id='addto-" +
-			i +
+			"<div class='addtolist' id='" +
+			data[i].headline +
 			"'>" +
 			data[i].overlay +
 			"</div>" +
